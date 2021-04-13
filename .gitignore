@@ -1,6 +1,15 @@
 
-# Created by https://www.toptal.com/developers/gitignore/api/androidstudio,macos,linux,windows
-# Edit at https://www.toptal.com/developers/gitignore?templates=androidstudio,macos,linux,windows
+# Created by https://www.toptal.com/developers/gitignore/api/androidstudio,macos,windows,linux,firebase
+# Edit at https://www.toptal.com/developers/gitignore?templates=androidstudio,macos,windows,linux,firebase
+
+### Firebase ###
+.idea
+**/node_modules/*
+**/.firebaserc
+
+### Firebase Patch ###
+.runtimeconfig.json
+.firebase/
 
 ### Linux ###
 *~
@@ -206,4 +215,4 @@ fabric.properties
 
 !/gradle/wrapper/gradle-wrapper.jar
 
-# End of https://www.toptal.com/developers/gitignore/api/androidstudio,macos,linux,windows
+# End of https://www.toptal.com/developers/gitignore/api/androidstudio,macos,windows,linux,firebase
