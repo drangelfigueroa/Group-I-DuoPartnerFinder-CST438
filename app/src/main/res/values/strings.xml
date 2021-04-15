@@ -1,3 +1,8 @@
 <resources>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
     <string name="app_name">DuoFinder</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="e_mail">E-mail</string>
 </resources>
