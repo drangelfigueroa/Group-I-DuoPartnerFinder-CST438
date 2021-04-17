@@ -11,7 +11,6 @@ android:
    - build-tools-29.0.2
    - android-22
    - android-29
-   - android-30
    - android-24
    - sys-img-armeabi-v7a-android-22
    - sys-img-
