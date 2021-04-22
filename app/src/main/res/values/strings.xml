@@ -3,8 +3,10 @@
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="app_name">DuoFinder</string>
-    <string name="sign_up">Sign up</string>
+    <string name="sign_up">Sign Up</string>
     <string name="e_mail">E-mail</string>
+    <string name="profile_btn">Profile</string>
+    <string name="logout_btn">Logout</string>
     <string name="sign_in">Sign in</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="create_account">Create Account</string>
