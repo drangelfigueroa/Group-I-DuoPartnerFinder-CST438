@@ -1,5 +1,6 @@
 package com.example.duofinder;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -55,5 +56,10 @@ public class ProfileActivity extends AppCompatActivity {
 //                startActivity(i);
 //            }
 //        });
+    }
+
+    public static Intent intentFactory(Context ctx) {
+        Intent intent = new Intent(ctx, ProfileActivity.class);
+        return intent;
     }
 }

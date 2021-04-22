@@ -15,8 +15,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toast.makeText(this, "connection successful", Toast.LENGTH_SHORT).show();
         startActivity(SignupActivity.intentFactory(this));
-
-        //TODO: once logged in, return here as the landing page
     }
 
     /**
