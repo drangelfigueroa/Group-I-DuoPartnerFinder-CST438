@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.duofinder.DB.POJO.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -22,7 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.regex.Pattern;
 
-public class SignupActivity extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private EditText mUsernameEt;
@@ -50,7 +51,7 @@ public class SignupActivity extends AppCompatActivity {
         mProgress = findViewById(R.id.progressBar);
         mSignInTV = findViewById(R.id.textViewSignIn);
         mSignInTV.setOnClickListener(v -> {
-            startActivity(SignInActivity.intentFactory(SignupActivity.this));
+            startActivity(SignInActivity.intentFactory(SignUpActivity.this));
         });
         mSignUpBtn.setOnClickListener(v -> {
             String username = mUsernameEt.getText().toString().trim();
@@ -90,15 +91,15 @@ public class SignupActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-                                            Toast.makeText(SignupActivity.this, "User registered.", Toast.LENGTH_LONG).show();
-                                            startActivity(SignInActivity.intentFactory(SignupActivity.this));
+                                            Toast.makeText(SignUpActivity.this, "User registered.", Toast.LENGTH_LONG).show();
+                                            startActivity(SignInActivity.intentFactory(SignUpActivity.this));
                                         } else {
-                                            Toast.makeText(SignupActivity.this, "Try again.", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(SignUpActivity.this, "Try again.", Toast.LENGTH_LONG).show();
                                         }
                                     }
                                 });
                             } else {
-                                Toast.makeText(SignupActivity.this, "Try again.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(SignUpActivity.this, "Try again.", Toast.LENGTH_LONG).show();
                             }
                             mProgress.setVisibility(View.GONE);
                         }
@@ -145,7 +146,7 @@ public class SignupActivity extends AppCompatActivity {
      * @return the Intent to switch to this activity
      */
     public static Intent intentFactory(Context ctx) {
-        return new Intent(ctx, SignupActivity.class);
+        return new Intent(ctx, SignUpActivity.class);
     }
 
 }

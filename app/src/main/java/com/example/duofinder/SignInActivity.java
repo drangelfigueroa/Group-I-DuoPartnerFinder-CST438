@@ -44,7 +44,7 @@ public class SignInActivity extends AppCompatActivity {
         mProgress = findViewById(R.id.progressBar);
         mSignUpTV = findViewById(R.id.textViewCreateAcc);
         mSignUpTV.setOnClickListener(v -> {
-            startActivity(SignupActivity.intentFactory(this));
+            startActivity(SignUpActivity.intentFactory(this));
         });
 
         mLogInBtn.setOnClickListener(v -> signIn());
@@ -62,7 +62,7 @@ public class SignInActivity extends AppCompatActivity {
 
     public void persistentLogin() {
         FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null)
+        if (user!=null)
             startActivity(MainActivity.intentFactory(SignInActivity.this));
     }
 
