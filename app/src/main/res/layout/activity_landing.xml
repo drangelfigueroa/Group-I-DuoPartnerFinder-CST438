@@ -6,27 +6,85 @@
     android:layout_height="match_parent"
     tools:context=".LandingActivity">
 
-    <Button
-        android:id="@+id/buttonProfile"
+    <TextView
+        android:id="@+id/textViewLogout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="84dp"
-        android:text="@string/profile_btn"
-        app:layout_constraintBottom_toTopOf="@+id/buttonLogout"
+        android:fontFamily="sans-serif"
+        android:text="@string/logout_btn"
+        app:layout_constraintBottom_toTopOf="@+id/textViewAppName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintHorizontal_bias="0.955"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.125" />
 
-    <Button
-        android:id="@+id/buttonLogout"
+    <TextView
+        android:id="@+id/textViewUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="44dp"
-        android:text="@string/logout_btn"
+        android:fontFamily="sans-serif"
+        app:layout_constraintBottom_toTopOf="@+id/textViewAppName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.043"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.126" />
+
+    <TextView
+        android:id="@+id/textViewAppName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:text="@string/app_name"
+        android:textSize="45sp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonChat"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonChat"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:text="@string/chat"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@+id/buttonProfile"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="@color/dark"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAppName" />
+
+    <Button
+        android:id="@+id/buttonProfile"
+        android:layout_width="140dp"
+        android:textAllCaps="false"
+        android:layout_height="wrap_content"
+        android:text="@string/profile"
+        android:backgroundTint="@color/dark"
+        app:layout_constraintBottom_toTopOf="@+id/buttonAdmin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonChat" />
+
+    <Button
+        android:id="@+id/buttonAdmin"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:text="@string/admin"
+        android:textAllCaps="false"
+        android:backgroundTint="@color/green"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonProfile" />
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

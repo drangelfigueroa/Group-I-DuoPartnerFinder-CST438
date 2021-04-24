@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
+import android.util.Printer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.duofinder.DB.POJO.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -30,6 +32,7 @@ public class SignInActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
         wireUp();
@@ -37,7 +40,6 @@ public class SignInActivity extends AppCompatActivity {
 
     public void wireUp() {
         mAuth = FirebaseAuth.getInstance();
-        persistentLogin();
         mPasswordEt = findViewById(R.id.editTextTextPassword);
         mEmailEt = findViewById(R.id.editTextTextEmailAddress);
         mLogInBtn = findViewById(R.id.buttonLogin);
@@ -51,6 +53,13 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     /**
+     * Disables back Button
+     */
+    @Override
+    public void onBackPressed() {
+    }
+
+    /**
      * Factory pattern provided Intent to switch to this activity.
      *
      * @param ctx the Context to switch from
@@ -58,12 +67,6 @@ public class SignInActivity extends AppCompatActivity {
      */
     public static Intent intentFactory(Context ctx) {
         return new Intent(ctx, SignInActivity.class);
-    }
-
-    public void persistentLogin() {
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user!=null)
-            startActivity(MainActivity.intentFactory(SignInActivity.this));
     }
 
     public void signIn() {
@@ -92,6 +95,7 @@ public class SignInActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     mProgress.setVisibility(View.GONE);
                     startActivity(MainActivity.intentFactory(SignInActivity.this));
+                    finish();
                     return;
                 }
                 mProgress.setVisibility(View.GONE);
