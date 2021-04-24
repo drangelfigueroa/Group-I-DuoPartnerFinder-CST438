@@ -32,7 +32,7 @@ public class LandingActivity extends AppCompatActivity {
         mLogoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = SignupActivity.intentFactory(getApplicationContext());
+                Intent intent = SignUpActivity.intentFactory(getApplicationContext());
                 finish();
                 startActivity(intent);
             }

@@ -10,4 +10,6 @@
     <string name="sign_in">Sign in</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="create_account">Create Account</string>
+    <string name="add_game">Add Game</string>
+    <string name="edit_games">Edit Games</string>
 </resources>
