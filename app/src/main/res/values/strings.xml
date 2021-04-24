@@ -12,4 +12,9 @@
     <string name="create_account">Create Account</string>
     <string name="add_game">Add Game</string>
     <string name="edit_games">Edit Games</string>
+    <string name="admin">Admin</string>
+    <string name="edit_account">Edit Account</string>
+    <string name="chat">Chat</string>
+    <string name="account">Account</string>
+    <string name="profile">Profile</string>
 </resources>

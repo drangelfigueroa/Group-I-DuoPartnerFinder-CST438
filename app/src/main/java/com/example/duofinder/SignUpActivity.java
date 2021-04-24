@@ -43,6 +43,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void wireUp() {
         mAuth = FirebaseAuth.getInstance();
+
         mUsernameEt = findViewById(R.id.editTextUsername);
         mEmailEt = findViewById(R.id.editTextTextEmailAddress);
         mPasswordEt = findViewById(R.id.editTextTextPassword);
@@ -52,6 +53,7 @@ public class SignUpActivity extends AppCompatActivity {
         mSignInTV = findViewById(R.id.textViewSignIn);
         mSignInTV.setOnClickListener(v -> {
             startActivity(SignInActivity.intentFactory(SignUpActivity.this));
+            finish();
         });
         mSignUpBtn.setOnClickListener(v -> {
             String username = mUsernameEt.getText().toString().trim();
@@ -84,22 +86,22 @@ public class SignUpActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                User user = new User(username, email);
+                                User user = new User(username, email, false);
                                 FirebaseDatabase.getInstance().getReference("Users")
                                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                         .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-                                            Toast.makeText(SignUpActivity.this, "User registered.", Toast.LENGTH_LONG).show();
                                             startActivity(SignInActivity.intentFactory(SignUpActivity.this));
+                                            finish();
                                         } else {
-                                            Toast.makeText(SignUpActivity.this, "Try again.", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(SignUpActivity.this, "ERROR", Toast.LENGTH_LONG).show();
                                         }
                                     }
                                 });
                             } else {
-                                Toast.makeText(SignUpActivity.this, "Try again.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(SignUpActivity.this,"User already exists." , Toast.LENGTH_LONG).show();
                             }
                             mProgress.setVisibility(View.GONE);
                         }
@@ -107,6 +109,13 @@ public class SignUpActivity extends AppCompatActivity {
 
         });
 
+    }
+
+    /**
+     * Disables back Button
+     */
+    @Override
+    public void onBackPressed() {
     }
 
     /**
