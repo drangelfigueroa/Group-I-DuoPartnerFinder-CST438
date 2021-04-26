@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.duofinder.DB.POJO.Plays;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +24,7 @@ import java.util.HashMap;
 public class PlayersListActivity extends AppCompatActivity {
     private DatabaseReference mRef;
     private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
     private String gameID;
     private HashMap<String, Plays> players;
     @Override
@@ -36,6 +38,7 @@ public class PlayersListActivity extends AppCompatActivity {
         gameID = extras.getString("gameID");
         mRef = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
         //GameID, Username
         players = new HashMap<>();
         mRef.child("Plays").addValueEventListener(new ValueEventListener() {
@@ -43,6 +46,9 @@ public class PlayersListActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
                     for(DataSnapshot snap : snapshot.getChildren()){
+                        if(snap.getValue(Plays.class).userId.equals(mUser.getUid())){
+                            continue;
+                        }
                         if(snap.getValue(Plays.class).gameId.equals(gameID)){
                             players.put(snap.getKey(), snap.getValue(Plays.class));
                         }
