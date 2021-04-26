@@ -17,31 +17,21 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class ProfileActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
     private TextView mName;
-    private Button mBackBtn, mEditBtn, mAddGamesBtn;
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String name = user.getDisplayName();
-        mName.setText(name);
-    }
+    private Button mEditBtn, mAddGamesBtn;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBackBtn = findViewById(R.id.profileBackBtn);
+        setContentView(R.layout.activity_profile);
+        mName = findViewById(R.id.profileName);
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
         mEditBtn = findViewById(R.id.profileEditBtn);
         mAddGamesBtn = findViewById(R.id.profileAddGames);
 
-//        mBackBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
-//                startActivity(i);
-//            }
-//        });
+        mName.setText(MainActivity.USER.username);
+
         mEditBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,13 +39,13 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-//        mAddGamesBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent i = new Intent(getApplicationContext(), AddGamesActivity.class);
-//                startActivity(i);
-//            }
-//        });
+        mAddGamesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), EditGamesActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     public static Intent intentFactory(Context ctx) {
