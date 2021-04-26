@@ -13,6 +13,10 @@
         <activity android:name=".LandingActivity" />
         <activity android:name=".SignInActivity" />
         <activity android:name=".SignUpActivity" />
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".EditProfileActivity" />
+        <activity android:name=".SearchActivity"/>
+        <activity android:name=".PlayersListActivity"/>
         <activity android:name=".MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

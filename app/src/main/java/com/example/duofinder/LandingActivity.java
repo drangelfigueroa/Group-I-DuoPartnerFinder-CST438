@@ -37,6 +37,8 @@ public class LandingActivity extends AppCompatActivity {
         mChatBtn = findViewById(R.id.buttonChat);
         mChatBtn.setOnClickListener(v -> {
             //todo: ChatActivity
+            Intent i = new Intent(getApplicationContext(), SearchActivity.class);
+            startActivity(i);
         });
 
         mProfileBtn = findViewById(R.id.buttonProfile);

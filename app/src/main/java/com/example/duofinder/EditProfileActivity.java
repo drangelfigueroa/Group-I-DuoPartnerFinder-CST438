@@ -1,5 +1,6 @@
 package com.example.duofinder;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,25 +30,19 @@ public class EditProfileActivity extends AppCompatActivity {
     private EditText mName, mNewPass, mPassConfirm, mOldPass, mEmail;
     private Button mConfirmBtn, mCancelBtn;
     private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
+    private DatabaseReference mRef;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editprofile);
-
-//        display();
     }
+    void wireUp(){
+        mAuth = FirebaseAuth.getInstance();
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
+        mRef = FirebaseDatabase.getInstance().getReference();
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String name = user.getDisplayName();
-        String email = user.getEmail();
-        mName.setText(name);
-        mEmail.setText(email);
-    }
-
-    protected void display(){
         mName = findViewById(R.id.editName);
         mNewPass = findViewById(R.id.editChangePassword);
         mPassConfirm = findViewById(R.id.editConfirmNewPassword);
@@ -56,35 +51,37 @@ public class EditProfileActivity extends AppCompatActivity {
         mCancelBtn = findViewById(R.id.editCancelBtn);
         mEmail = findViewById(R.id.editEmail);
 
+        String name = mUser.getDisplayName();
+        String email = mUser.getEmail();
+        mName.setText(MainActivity.USER.username);
+        mEmail.setText(email);
+
         mConfirmBtn.setOnClickListener(new View.OnClickListener(){
-            String newPass = mNewPass.getText().toString();
-            String passConfirm = mPassConfirm.getText().toString();
-            String oldPass = mOldPass.getText().toString();
             @Override
             public void onClick(View view) {
+                String newPass = mNewPass.getText().toString();
+                String passConfirm = mPassConfirm.getText().toString();
+                String oldPass = mOldPass.getText().toString();
                 if(oldPass.isEmpty()){
-                    mName.setError("Your old Password is required to confirm changes!");
+                    mOldPass.setError("You need to enter your Old Password before going through with these changes!");
                 }
-                else if(passwordIsValid(newPass) && passConfirm.isEmpty()){
-                    mPassConfirm.setError("You need to confirm the new password in order to set it!");
+                if(passwordIsValid(newPass) && !newPass.equals(passConfirm)){
+                    mPassConfirm.setError("New Password Does not match with the confirmation!");
+                    mNewPass.setError("New Password Does not match with the confirmation!");
                 }
-                else if(passwordIsValid(newPass) || newPass != passConfirm){
-                    mPassConfirm.setError("Confirm Password does not match with the new Password you're trying to change");
-                }
-                else{
+                if(passwordIsValid(newPass) && newPass.equals(passConfirm)){
                     updateProfile();
-                      //moving back to Profile page
-//                    Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
-//                    startActivity(i);
+                    Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
+                    startActivity(i);
                 }
             }
         });
         mCancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //moving back to Profile page
-//                    Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
-//                    startActivity(i);
+//                moving back to Profile page
+                    Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
+                    startActivity(i);
             }
         });
     }
@@ -94,11 +91,16 @@ public class EditProfileActivity extends AppCompatActivity {
         mPassConfirm = findViewById(R.id.editConfirmNewPassword);
         mOldPass = findViewById(R.id.editOldPassword);
         mEmail = findViewById(R.id.editEmail);
+        mRef = FirebaseDatabase.getInstance().getReference();
+
         String name = mName.getText().toString();
         String newPass = mNewPass.getText().toString();
         String newEmail = mEmail.getText().toString();
 
+        //Updating User info in User OBJ
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uID = user.getUid();
+
         UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
                 .setDisplayName(name)
                 .build();
@@ -106,9 +108,11 @@ public class EditProfileActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        mRef.child("Users").child(uID).child("username").setValue(name);
                         Toast.makeText(EditProfileActivity.this, "Updated Profile!", Toast.LENGTH_SHORT).show();
                     }
                 });
+
         user.updatePassword(newPass)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -120,12 +124,17 @@ public class EditProfileActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        mRef.child("Users").child(uID).child("email").setValue(newEmail);
                         Log.d("TAG", "User email updated.");
                     }
                 });
 
 
 
+    }
+    public static Intent intentFactory(Context ctx) {
+        Intent intent = new Intent(ctx, ProfileActivity.class);
+        return intent;
     }
     /**
      * Checks if a password's format is valid.
