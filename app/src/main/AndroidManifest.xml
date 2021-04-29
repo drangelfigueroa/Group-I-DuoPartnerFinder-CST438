@@ -17,6 +17,8 @@
         <activity android:name=".EditProfileActivity" />
         <activity android:name=".SearchActivity"/>
         <activity android:name=".PlayersListActivity"/>
+        <activity android:name=".AddGameActivity" />
+        <activity android:name=".AdminActivity" />
         <activity android:name=".MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

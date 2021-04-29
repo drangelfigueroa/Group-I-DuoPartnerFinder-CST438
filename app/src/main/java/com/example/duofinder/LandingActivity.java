@@ -51,6 +51,8 @@ public class LandingActivity extends AppCompatActivity {
             mAdminBtn.setVisibility(View.VISIBLE);
             mAdminBtn.setOnClickListener(v -> {
                 //todo: AdminActivity
+                Intent i = new Intent(getApplicationContext(), AdminActivity.class);
+                startActivity(i);
             });
         }
 
