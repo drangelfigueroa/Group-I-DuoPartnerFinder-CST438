@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.duofinder.DB.POJO.Plays;
+import com.example.duofinder.DB.POJO.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +23,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 
 public class PlayersListActivity extends AppCompatActivity {
+    public static User DUO;
+    public static String DUO_ID;
     private DatabaseReference mRef;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
@@ -54,11 +57,17 @@ public class PlayersListActivity extends AppCompatActivity {
                         }
                     }
                     Log.d("Players found: ", String.valueOf(players.size()));
+
                 }
                 ListView listView = findViewById(R.id.playerList);
                 String[] playerList = getPlayers();
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(PlayersListActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, playerList);
                 listView.setAdapter(arrayAdapter);
+                listView.setOnItemClickListener((parent, view, position, id) ->{
+                    Plays plays = (Plays) players.values().toArray()[position];
+                    getDuo(plays.userId);
+                    startActivity(ChatActivity.intentFactory(PlayersListActivity.this));
+                });
             }
 
             @Override
@@ -68,6 +77,25 @@ public class PlayersListActivity extends AppCompatActivity {
         });
 
     }
+    public void getDuo(final String userID){
+        DUO_ID = userID;
+         mRef.child("Users").child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+             @Override
+             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                 if(snapshot.exists()){
+                     DUO = snapshot.getValue(User.class);
+                     Log.d("success? ", "onDataChange: "+ DUO.username);
+                     
+                 }
+             }
+
+             @Override
+             public void onCancelled(@NonNull DatabaseError error) {
+
+             }
+         });
+    }
+
     public String[] getPlayers(){
         String[] playerList = new String[players.size()];
         int i = 0;
