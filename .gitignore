@@ -3,6 +3,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=androidstudio,macos,windows,linux,firebase
 
 ### Firebase ###
+google-services.json
 .idea
 **/node_modules/*
 **/.firebaserc
