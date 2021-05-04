@@ -9,17 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DuoFinder">
+        <activity android:name=".ChatActivity"></activity>
         <activity android:name=".EditGamesActivity" />
         <activity android:name=".LandingActivity" />
         <activity android:name=".SignInActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".EditProfileActivity" />
-        <activity android:name=".SearchActivity"/>
-        <activity android:name=".PlayersListActivity"/>
+        <activity android:name=".SearchActivity" />
+        <activity android:name=".PlayersListActivity" />
         <activity android:name=".AddGameActivity" />
         <activity android:name=".AdminActivity" />
-        <activity android:name=".MainActivity" >
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
