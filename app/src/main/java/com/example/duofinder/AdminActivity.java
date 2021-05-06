@@ -34,7 +34,8 @@ public class AdminActivity extends AppCompatActivity {
         mDeleteUsersBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //todo:Deleting Users
+                Intent i = new Intent(getApplicationContext(), DeleteUserActivity.class);
+                startActivity(i);
             }
         });
     }
