@@ -10,12 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.duofinder.DB.POJO.Game;
+import com.example.duofinder.DB.POJO.Plays;
 import com.example.duofinder.DB.POJO.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
@@ -25,43 +27,67 @@ public class SearchActivity extends AppCompatActivity {
     private User mUser;
     private FirebaseAuth mAuth;
 
-    private HashMap<String, Game> games;
-    private HashMap<String, String> players;
+    private HashMap<String, Game> allGames;
+    private HashMap<String, Plays> addedGames;
+    private HashMap<String, String> keys;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         wireUp();
     }
-    void wireUp(){
+
+    void wireUp() {
         mRef = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
-        games = new HashMap<>();
-        players = new HashMap<>();
+
+        allGames = new HashMap<>();
+        addedGames = new HashMap<>();
+        keys = new HashMap<>();
 
         mRef.child("Game").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    for(DataSnapshot snap: snapshot.getChildren()){
-                        games.put(snap.getKey(), snap.getValue(Game.class));
+                if (snapshot.exists()) {
+                    for (DataSnapshot snap : snapshot.getChildren()) {
+                        allGames.put(snap.getKey(), snap.getValue(Game.class));
                     }
-                    Log.d("Games shown: ", String.valueOf(games.size()));
-                }
-                ListView listView = findViewById(R.id.gamesList);
-                String[] gameTitles = getTitles();
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(SearchActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, gameTitles);
-                listView.setAdapter(arrayAdapter);
-                listView.setOnItemClickListener((parent, view, position, id) ->{
-                    String choice = parent.getItemAtPosition(position).toString();
-                    String GAME_ID = null;
-                    for(String gameID: games.keySet()){
-                        if(games.get(gameID).title.equals(choice)){
-                            GAME_ID = gameID;
-                            changeToPlayersList(GAME_ID);
+                    Query getPlays = mRef.child("Plays").orderByChild("userId").equalTo(mAuth.getUid());
+
+                    getPlays.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()) {
+                                for (DataSnapshot snap : snapshot.getChildren()) {
+                                    Plays p = snap.getValue(Plays.class);
+                                    addedGames.put(p.gameId, p);
+                                    keys.put(p.gameId, snap.getKey());
+                                }
+                                Log.d("Entries found: ", String.valueOf(allGames.size()));
+                            }
+                            ListView listView = findViewById(R.id.gamesList);
+                            String[] gameTitles = getTitles();
+                            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(SearchActivity.this, android.R.layout.simple_list_item_1, android.R.id.text1, gameTitles);
+                            listView.setAdapter(arrayAdapter);
+                            listView.setOnItemClickListener((parent, view, position, id) -> {
+                                String choice = parent.getItemAtPosition(position).toString();
+                                String GAME_ID = null;
+                                for (String gameID : allGames.keySet()) {
+                                    if (allGames.get(gameID).title.equals(choice)) {
+                                        GAME_ID = gameID;
+                                        changeToPlayersList(GAME_ID);
+                                    }
+                                }
+                            });
                         }
-                    }
-                });
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
             }
 
             @Override
@@ -69,13 +95,14 @@ public class SearchActivity extends AppCompatActivity {
 
             }
         });
-
     }
+
     public String[] getTitles(){
-        String[] titles = new String[games.size()];
+        String[] titles = new String[allGames.size()];
         int i = 0;
-        for(Game game : games.values()){
-            titles[i] = game.title;
+        for(Plays g : addedGames.values()){
+            String gameName = allGames.get(g.gameId).title;
+            titles[i] = gameName;;
             i++;
         }
         return titles;
