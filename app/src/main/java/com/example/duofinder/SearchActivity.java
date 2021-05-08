@@ -98,11 +98,11 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public String[] getTitles(){
-        String[] titles = new String[allGames.size()];
+        String[] titles = new String[addedGames.size()];
         int i = 0;
         for(Plays g : addedGames.values()){
             String gameName = allGames.get(g.gameId).title;
-            titles[i] = gameName;;
+            titles[i] = gameName;
             i++;
         }
         return titles;
