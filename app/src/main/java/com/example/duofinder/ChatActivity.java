@@ -57,6 +57,7 @@ public class ChatActivity extends AppCompatActivity {
         mSendBtn = findViewById(R.id.sendButton);
         mRef = FirebaseDatabase.getInstance().getReference();
         mQuery = mRef.child("Conversations").child(mAuth.getUid()).child(PlayersListActivity.DUO_ID);
+        mMsgET.requestFocus();
 
         FirebaseListOptions<Chat> options = new FirebaseListOptions.Builder<Chat>()
                 .setQuery(mQuery, Chat.class)
@@ -81,6 +82,8 @@ public class ChatActivity extends AppCompatActivity {
 
         mSendBtn.setOnClickListener(v -> {
             String message = mMsgET.getText().toString();
+            mMsgET.setText("");
+            mMsgET.requestFocus();
             if (!message.isEmpty()) {
                 // Adds to signed-in user's list of messages
                 mRef.child("Conversations").child(mAuth.getUid())
