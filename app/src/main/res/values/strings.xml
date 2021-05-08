@@ -10,12 +10,14 @@
     <string name="sign_in">Sign in</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="create_account">Create Account</string>
-    <string name="add_game">Add Game</string>
-    <string name="edit_games">Edit Games</string>
+    <string name="add_game">Add Games</string>
     <string name="admin">Admin</string>
     <string name="edit_account">Edit Account</string>
     <string name="chat">Chat</string>
     <string name="account">Account</string>
     <string name="profile">Profile</string>
     <string name="send">Send</string>
+    <string name="edit_games">Edit Games</string>
+    <string name="delete_users">Delete Users</string>
+    <string name="edit_profile">Edit Profile</string>
 </resources>

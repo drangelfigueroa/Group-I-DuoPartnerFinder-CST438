@@ -74,4 +74,11 @@ public class LandingActivity extends AppCompatActivity {
         startActivity(MainActivity.intentFactory(LandingActivity.this));
         finish();
     }
+
+    /**
+     * Disables back Button
+     */
+    @Override
+    public void onBackPressed() {
+    }
 }
