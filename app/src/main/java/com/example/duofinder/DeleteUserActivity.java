@@ -31,12 +31,15 @@ public class DeleteUserActivity extends AppCompatActivity {
     private HashMap<String, User> user;
     private HashMap<String, String> userKeys;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_user);
         mRef = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
+        user = new HashMap<>();
+        userKeys = new HashMap<>();
 
         mRef.child("Users").addValueEventListener(new ValueEventListener() {
             @Override
@@ -54,7 +57,6 @@ public class DeleteUserActivity extends AppCompatActivity {
                 listView.setAdapter(arrayAdapter);
                 listView.setOnItemClickListener((parent, view, position, id) -> {
                     String selection = parent.getItemAtPosition(position).toString();
-                    boolean remove = false;
                     String USER_ID = null;
                     for (String userID : user.keySet()) {
                         if (user.get(userID).username.equals(selection)) {
@@ -67,7 +69,7 @@ public class DeleteUserActivity extends AppCompatActivity {
                     String finalUSER_ID = USER_ID;
                     builder.setPositiveButton("Remove", (dialog, which) -> {
                         dialog.cancel();
-                            mRef.child("Plays").child(userKeys.get(finalUSER_ID)).removeValue().addOnCompleteListener(task -> {
+                            mRef.child("Users").child(userKeys.get(finalUSER_ID)).removeValue().addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {
                                     userKeys.remove(finalUSER_ID);
                                     Log.d("firebase removed ", finalUSER_ID);
