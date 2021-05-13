@@ -20,6 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+
         android:id="@+id/adminAddGames"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
@@ -33,11 +34,11 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewAppName" />
 
     <Button
-        android:id="@+id/adminDeleteUsers"
+        android:id="@+id/adminUserList"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/blue"
-        android:text="@string/delete_users"
+        android:text="User List"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
