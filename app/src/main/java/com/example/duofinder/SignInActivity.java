@@ -25,6 +25,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+
+/**
+ * This Activity allows the user to sign in.
+ * @author Daniel Rangel Figueroa
+ */
 public class SignInActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private EditText mPasswordEt;
@@ -42,6 +47,9 @@ public class SignInActivity extends AppCompatActivity {
         wireUp();
     }
 
+    /**
+     * Wires up display.
+     */
     public void wireUp() {
         mAuth = FirebaseAuth.getInstance();
         mPasswordEt = findViewById(R.id.editTextTextPassword);
@@ -77,6 +85,10 @@ public class SignInActivity extends AppCompatActivity {
         return new Intent(ctx, SignInActivity.class);
     }
 
+
+    /**
+     * Sings in the user by using their Email and password.
+     */
     public void signIn() {
         String email = mEmailEt.getText().toString().trim();
         String password = mPasswordEt.getText().toString().trim();
@@ -112,6 +124,9 @@ public class SignInActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Email form that shows when 'forgot password?' is clicked on.
+     */
     public void showAlert(){
         final EditText editText = new EditText(this);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(

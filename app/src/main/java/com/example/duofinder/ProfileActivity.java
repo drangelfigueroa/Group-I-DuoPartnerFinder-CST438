@@ -39,13 +39,7 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        mAddGamesBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), EditGamesActivity.class);
-                startActivity(i);
-            }
-        });
+        mAddGamesBtn.setOnClickListener(view -> startActivity(EditGamesActivity.intentFactory(ProfileActivity.this)));
     }
 
     public static Intent intentFactory(Context ctx) {

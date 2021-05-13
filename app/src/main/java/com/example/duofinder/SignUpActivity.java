@@ -1,8 +1,5 @@
 package com.example.duofinder;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,26 +10,26 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.duofinder.DB.POJO.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
-
+import java.util.Objects;
 import java.util.regex.Pattern;
 
+/**
+ * Activity is designed to allow a user to create an account.
+ * @author Daniel Rangel Figueroa
+ */
 public class SignUpActivity extends AppCompatActivity {
-
     private FirebaseAuth mAuth;
     private EditText mUsernameEt;
     private EditText mPasswordEt;
     private EditText mPasswordConfEt;
     private EditText mEmailEt;
-    private TextView mSignInTV;
-    private Button mSignUpBtn;
     private ProgressBar mProgress;
+    private String mEmail;
+    private String mPassword;
+    private String mUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,72 +38,27 @@ public class SignUpActivity extends AppCompatActivity {
         wireUp();
     }
 
+    /**
+     * Wires up display.
+     */
     private void wireUp() {
         mAuth = FirebaseAuth.getInstance();
-
         mUsernameEt = findViewById(R.id.editTextUsername);
         mEmailEt = findViewById(R.id.editTextTextEmailAddress);
         mPasswordEt = findViewById(R.id.editTextTextPassword);
         mPasswordConfEt = findViewById(R.id.editTextTextPasswordConf);
-        mSignUpBtn = findViewById(R.id.buttonSignUp);
+        Button mSignUpBtn = findViewById(R.id.buttonSignUp);
         mProgress = findViewById(R.id.progressBar);
-        mSignInTV = findViewById(R.id.textViewSignIn);
+        TextView mSignInTV = findViewById(R.id.textViewSignIn);
+
         mSignInTV.setOnClickListener(v -> {
             startActivity(SignInActivity.intentFactory(SignUpActivity.this));
             finish();
         });
-        mSignUpBtn.setOnClickListener(v -> {
-            String username = mUsernameEt.getText().toString().trim();
-            String email = mEmailEt.getText().toString().trim();
-            String password = mPasswordEt.getText().toString().trim();
-            String passwordConf = mPasswordConfEt.getText().toString().trim();
-            if (!usernameIsValid(username)) {
-                mUsernameEt.setError("Must begin with letter, no whitespace, and length 6-30.");
-                mUsernameEt.requestFocus();
-                return;
-            }
-            if (!passwordIsValid(password)) {
-                mPasswordEt.setError("Must not contain whitespace and length 6-30.");
-                mPasswordEt.requestFocus();
-                return;
-            }
-            if (!password.equals(passwordConf)) {
-                mPasswordConfEt.setError("Password does not match.");
-                mPasswordConfEt.requestFocus();
-                return;
-            }
-            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                mEmailEt.setError("Provide valid E-Mail.");
-                mEmailEt.requestFocus();
-                return;
-            }
-            mProgress.setVisibility(View.VISIBLE);
-            mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                User user = new User(username, email, false);
-                                FirebaseDatabase.getInstance().getReference("Users")
-                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                        .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            startActivity(SignInActivity.intentFactory(SignUpActivity.this));
-                                            finish();
-                                        } else {
-                                            Toast.makeText(SignUpActivity.this, "ERROR", Toast.LENGTH_LONG).show();
-                                        }
-                                    }
-                                });
-                            } else {
-                                Toast.makeText(SignUpActivity.this,"User already exists." , Toast.LENGTH_LONG).show();
-                            }
-                            mProgress.setVisibility(View.GONE);
-                        }
-                    });
 
+        mSignUpBtn.setOnClickListener(v -> {
+            if(isFormatted())
+                    createAccount();
         });
 
     }
@@ -158,4 +110,61 @@ public class SignUpActivity extends AppCompatActivity {
         return new Intent(ctx, SignUpActivity.class);
     }
 
+    /**
+     * Checks if information from form is formatted. Throws an error if not.
+     * @return Whether the information is formatted.
+     */
+    public boolean isFormatted(){
+        mUsername = mUsernameEt.getText().toString().trim();
+        mEmail = mEmailEt.getText().toString().trim();
+        mPassword = mPasswordEt.getText().toString().trim();
+        String passwordConf = mPasswordConfEt.getText().toString().trim();
+        if (!usernameIsValid(mUsername)) {
+            mUsernameEt.setError("Must begin with letter, no whitespace, and length 6-30.");
+            mUsernameEt.requestFocus();
+            return false;
+        }
+        if (!passwordIsValid(mPassword)) {
+            mPasswordEt.setError("Must not contain whitespace and length 6-30.");
+            mPasswordEt.requestFocus();
+            return false;
+        }
+        if (!mPassword.equals(passwordConf)) {
+            mPasswordConfEt.setError("Password does not match.");
+            mPasswordConfEt.requestFocus();
+            return false;
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(mEmail).matches()) {
+            mEmailEt.setError("Provide valid E-Mail.");
+            mEmailEt.requestFocus();
+            return false;
+        }
+        mProgress.setVisibility(View.VISIBLE);
+        return true;
+    }
+
+    /***
+     * Creates an account from the information provided in form.
+     */
+    public void createAccount(){
+        mAuth.createUserWithEmailAndPassword(mEmail, mPassword)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        User user = new User(mUsername, mEmail, false);
+                        FirebaseDatabase.getInstance().getReference("Users")
+                                .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
+                                .setValue(user).addOnCompleteListener(task1 -> {
+                            if (task1.isSuccessful()) {
+                                startActivity(SignInActivity.intentFactory(SignUpActivity.this));
+                                finish();
+                            } else {
+                                Toast.makeText(SignUpActivity.this, "ERROR", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    } else {
+                        Toast.makeText(SignUpActivity.this,"User already exists." , Toast.LENGTH_LONG).show();
+                    }
+                    mProgress.setVisibility(View.GONE);
+                });
+    }
 }
