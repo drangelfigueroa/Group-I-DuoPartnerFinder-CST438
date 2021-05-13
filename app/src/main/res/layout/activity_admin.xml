@@ -20,14 +20,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/adminDeleteUsers"
+        android:id="@+id/adminUserList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="135dp"
         android:layout_marginTop="374dp"
         android:layout_marginEnd="135dp"
         android:layout_marginBottom="309dp"
-        android:text="Delete Users"
+        android:text="User List"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
