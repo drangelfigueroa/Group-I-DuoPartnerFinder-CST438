@@ -19,5 +19,6 @@
     <string name="send">Send</string>
     <string name="edit_games">Edit Games</string>
     <string name="user_list">User List</string>
+    <string name="game_list">Game List</string>
     <string name="edit_profile">Edit Profile</string>
 </resources>
