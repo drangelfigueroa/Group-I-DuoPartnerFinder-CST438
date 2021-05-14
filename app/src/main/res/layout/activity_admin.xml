@@ -27,11 +27,24 @@
         android:backgroundTint="@color/blue"
         android:text="@string/add_game"
         android:textAllCaps="false"
-        app:layout_constraintBottom_toTopOf="@+id/adminUserList"
+        app:layout_constraintBottom_toTopOf="@+id/adminGameList"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewAppName" />
+
+    <Button
+        android:id="@+id/adminGameList"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/blue"
+        android:text="@string/game_list"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@+id/adminUserList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/adminAddGames" />
 
     <Button
         android:id="@+id/adminUserList"
@@ -42,9 +55,9 @@
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/adminAddGames" />
+        app:layout_constraintTop_toBottomOf="@+id/adminGameList" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
