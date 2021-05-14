@@ -21,6 +21,10 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Objects;
 
+/**
+ * Loading screen: redirects user to appropriate activity.
+ * @author Daniel Rangel Figueroa
+ */
 public class MainActivity extends AppCompatActivity {
     public static User USER;
     private FirebaseAuth mAuth;

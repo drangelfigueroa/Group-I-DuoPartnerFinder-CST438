@@ -10,6 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DuoFinder">
         <activity android:name=".ChatActivity"></activity>
+        <activity android:name=".UserListActivity"></activity>
         <activity android:name=".EditGamesActivity" />
         <activity android:name=".LandingActivity" />
         <activity android:name=".SignInActivity" />

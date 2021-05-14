@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 
 public class EditProfileActivity extends AppCompatActivity {
     private EditText mName, mNewPass, mPassConfirm, mOldPass, mEmail;
-    private Button mConfirmBtn, mCancelBtn;
+    private Button mConfirmBtn;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private DatabaseReference mRef;
@@ -49,7 +49,6 @@ public class EditProfileActivity extends AppCompatActivity {
         mPassConfirm = findViewById(R.id.editConfirmNewPassword);
         mOldPass = findViewById(R.id.editOldPassword);
         mConfirmBtn = findViewById(R.id.editConfirmBtn);
-        mCancelBtn = findViewById(R.id.editCancelBtn);
         mEmail = findViewById(R.id.editEmail);
 
         String name = mUser.getDisplayName();
@@ -76,14 +75,6 @@ public class EditProfileActivity extends AppCompatActivity {
                     startActivity(i);
                     Toast.makeText(EditProfileActivity.this, "Updated Profile!", Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
-        mCancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                moving back to Profile page
-                    Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
-                    startActivity(i);
             }
         });
     }

@@ -1,9 +1,11 @@
 package com.example.duofinder;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -11,6 +13,7 @@ import android.util.Printer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +25,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+
+/**
+ * This Activity allows the user to sign in.
+ * @author Daniel Rangel Figueroa
+ */
 public class SignInActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private EditText mPasswordEt;
@@ -29,6 +37,7 @@ public class SignInActivity extends AppCompatActivity {
     private Button mLogInBtn;
     private TextView mSignUpTV;
     private ProgressBar mProgress;
+    private TextView mForgotTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +47,9 @@ public class SignInActivity extends AppCompatActivity {
         wireUp();
     }
 
+    /**
+     * Wires up display.
+     */
     public void wireUp() {
         mAuth = FirebaseAuth.getInstance();
         mPasswordEt = findViewById(R.id.editTextTextPassword);
@@ -45,9 +57,13 @@ public class SignInActivity extends AppCompatActivity {
         mLogInBtn = findViewById(R.id.buttonLogin);
         mProgress = findViewById(R.id.progressBar);
         mSignUpTV = findViewById(R.id.textViewCreateAcc);
+        mForgotTV = findViewById(R.id.textViewForgot);
+
         mSignUpTV.setOnClickListener(v -> {
             startActivity(SignUpActivity.intentFactory(this));
         });
+
+        mForgotTV.setOnClickListener(v -> showAlert());
 
         mLogInBtn.setOnClickListener(v -> signIn());
     }
@@ -69,6 +85,10 @@ public class SignInActivity extends AppCompatActivity {
         return new Intent(ctx, SignInActivity.class);
     }
 
+
+    /**
+     * Sings in the user by using their Email and password.
+     */
     public void signIn() {
         String email = mEmailEt.getText().toString().trim();
         String password = mPasswordEt.getText().toString().trim();
@@ -102,7 +122,50 @@ public class SignInActivity extends AppCompatActivity {
                 Toast.makeText(SignInActivity.this, "Unable to Sign in. Check credentials.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
+    /**
+     * Email form that shows when 'forgot password?' is clicked on.
+     */
+    public void showAlert(){
+        final EditText editText = new EditText(this);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+        );
+        editText.setLayoutParams(params);
+        editText.requestFocus();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setPositiveButton("Confirm", null);
+        AlertDialog alert = builder.create();
+        alert.setTitle("Enter Email");
+        alert.setView(editText);
+
+        alert.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button confirm = alert.getButton(AlertDialog.BUTTON_POSITIVE);
+
+                confirm.setOnClickListener(v -> {
+                    String email = editText.getText().toString().trim();
+                    if (email.isEmpty()) {
+                        editText.setError("Enter your Email address.");
+                        editText.requestFocus();
+                        return;
+                    }
+                    if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                        editText.setError("Enter a valid Email address.");
+                        editText.requestFocus();
+                        return;
+                    }
+                    mAuth.sendPasswordResetEmail(email);
+                    Toast.makeText(SignInActivity.this, "Check your email to reset your password.", Toast.LENGTH_LONG).show();
+                    alert.dismiss();
+
+                });
+            }
+        });
+        alert.show();
 
     }
 }

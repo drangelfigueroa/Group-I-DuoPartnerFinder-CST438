@@ -13,10 +13,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LandingActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
-    private TextView mUsernameTV;
-    private TextView mLogoutTV;
-    private Button mChatBtn;
-    private Button mProfileBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,31 +21,30 @@ public class LandingActivity extends AppCompatActivity {
         wireUp();
     }
 
+    /**
+     * Wires displays.
+     */
     public void wireUp() {
         mAuth = FirebaseAuth.getInstance();
-        mUsernameTV = findViewById(R.id.textViewUsername);
+        TextView mUsernameTV = findViewById(R.id.textViewUsername);
         mUsernameTV.setText(MainActivity.USER.username);
 
-        mLogoutTV = findViewById(R.id.textViewLogout);
+        TextView mLogoutTV = findViewById(R.id.textViewLogout);
         mLogoutTV.setOnClickListener(v -> logout());
 
-        mChatBtn = findViewById(R.id.buttonChat);
+        Button mChatBtn = findViewById(R.id.buttonChat);
         mChatBtn.setOnClickListener(v -> {
-            //todo: ChatActivity
             Intent i = new Intent(getApplicationContext(), SearchActivity.class);
             startActivity(i);
         });
 
-        mProfileBtn = findViewById(R.id.buttonProfile);
-        mProfileBtn.setOnClickListener(v -> {
-            startActivity(ProfileActivity.intentFactory(this));
-        });
+        Button mProfileBtn = findViewById(R.id.buttonProfile);
+        mProfileBtn.setOnClickListener(v -> startActivity(ProfileActivity.intentFactory(this)));
 
         if (MainActivity.USER.isAdmin) {
             Button mAdminBtn = findViewById(R.id.buttonAdmin);
             mAdminBtn.setVisibility(View.VISIBLE);
             mAdminBtn.setOnClickListener(v -> {
-                //todo: AdminActivity
                 Intent i = new Intent(getApplicationContext(), AdminActivity.class);
                 startActivity(i);
             });
@@ -64,13 +59,22 @@ public class LandingActivity extends AppCompatActivity {
      * @return the Intent to switch to this activity
      */
     public static Intent intentFactory(Context ctx) {
-        Intent intent = new Intent(ctx, LandingActivity.class);
-        return intent;
+        return new Intent(ctx, LandingActivity.class);
     }
 
+    /**
+     * Logouts user
+     */
     public void logout() {
         mAuth.signOut();
         startActivity(MainActivity.intentFactory(LandingActivity.this));
         finish();
+    }
+
+    /**
+     * Disables back Button
+     */
+    @Override
+    public void onBackPressed() {
     }
 }

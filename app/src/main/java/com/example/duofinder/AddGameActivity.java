@@ -35,7 +35,7 @@ public class AddGameActivity extends AppCompatActivity {
     private FirebaseDatabase mDB;
     private DatabaseReference mRef;
     private TextView mAddGameName, mAddGameTitle;
-    private Button mConfirmBtn, mCancelBtn;
+    private Button mConfirmBtn;
     private HashMap <String, User> user;
 
     @Override
@@ -54,46 +54,43 @@ public class AddGameActivity extends AppCompatActivity {
         mAddGameTitle = findViewById(R.id.addGameTitle);
         mAddGameName = findViewById(R.id.addGameName);
         mConfirmBtn = findViewById(R.id.addConfirmBtn);
-        mCancelBtn = findViewById(R.id.addCancelBtn);
 
         mConfirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String gameTitle = mAddGameTitle.getText().toString();
                 String gameName = mAddGameName.getText().toString();
-
-                if(gameName.isEmpty()) {
-                    mRef.child("Game").child(gameTitle).setValue(new Game(gameTitle)).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
-                                Intent i = new Intent(getApplicationContext(), AdminActivity.class);
-                                startActivity(i);
-                                Toast.makeText(AddGameActivity.this, "Game Added!", Toast.LENGTH_SHORT).show();
+                
+                if(!gameTitle.isEmpty()) {
+                    if (gameName.isEmpty()) {
+                        mRef.child("Game").child(gameTitle).setValue(new Game(gameTitle)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Intent i = new Intent(getApplicationContext(), AdminActivity.class);
+                                    startActivity(i);
+                                    Toast.makeText(AddGameActivity.this, "Game Added!", Toast.LENGTH_SHORT).show();
+                                }
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        mRef.child("Game").child(gameName).setValue(new Game(gameTitle)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Intent i = new Intent(getApplicationContext(), AdminActivity.class);
+                                    startActivity(i);
+                                    Toast.makeText(AddGameActivity.this, "Game Added!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
                 }else{
-                    mRef.child("Game").child(gameName).setValue(new Game(gameTitle)).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful()){
-                                Intent i = new Intent(getApplicationContext(), AdminActivity.class);
-                                startActivity(i);
-                                Toast.makeText(AddGameActivity.this, "Game Added!", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
+                    mAddGameTitle.setError("Add game Title.");
+                    mAddGameTitle.requestFocus();
                 }
 
 
-            }
-        });
-        mCancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), AdminActivity.class);
-                startActivity(i);
             }
         });
 
