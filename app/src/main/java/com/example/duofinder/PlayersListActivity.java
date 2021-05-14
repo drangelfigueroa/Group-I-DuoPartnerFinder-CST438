@@ -29,7 +29,9 @@ public class PlayersListActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private String gameID;
+
     private HashMap<String, Plays> players;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,21 +39,28 @@ public class PlayersListActivity extends AppCompatActivity {
         wireUp();
     }
     void wireUp(){
+        //Grabbing the Game that was selected in SearchActivity.java
         Bundle extras = getIntent().getExtras();
         gameID = extras.getString("gameID");
+
         mRef = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         mUser = FirebaseAuth.getInstance().getCurrentUser();
+
         //GameID, Username
         players = new HashMap<>();
+        //Creating a ListView in order to display the users that have the same game in their profiles
         mRef.child("Plays").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
+                    //Adding all the users who have played the game
                     for(DataSnapshot snap : snapshot.getChildren()){
+                        //Making sure the current user is not added to the list
                         if(snap.getValue(Plays.class).userId.equals(mUser.getUid())){
                             continue;
                         }
+                        //Matching the gameID with the play to make sure that the correct users are shown
                         if(snap.getValue(Plays.class).gameId.equals(gameID)){
                             players.put(snap.getKey(), snap.getValue(Plays.class));
                         }
