@@ -24,11 +24,13 @@ import java.util.HashMap;
 
 public class SearchActivity extends AppCompatActivity {
     private DatabaseReference mRef;
-    private User mUser;
     private FirebaseAuth mAuth;
 
+    //Contains all the games
     private HashMap<String, Game> allGames;
+    //Contains the games that the user has added to their profile
     private HashMap<String, Plays> addedGames;
+    //Gets the keys of the addedGames
     private HashMap<String, String> keys;
 
     @Override
@@ -46,6 +48,7 @@ public class SearchActivity extends AppCompatActivity {
         addedGames = new HashMap<>();
         keys = new HashMap<>();
 
+        //Creates a ListView for the games that the User has added to their profile
         mRef.child("Game").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

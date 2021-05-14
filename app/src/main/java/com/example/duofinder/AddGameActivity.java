@@ -61,8 +61,7 @@ public class AddGameActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String gameTitle = mAddGameTitle.getText().toString();
                 String gameName = mAddGameName.getText().toString();
-                String uID = mDB.getReference("Game").push().getKey();
-                Game newGame = new Game(gameTitle);
+
                 if(gameName.isEmpty()) {
                     mRef.child("Game").child(gameTitle).setValue(new Game(gameTitle)).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

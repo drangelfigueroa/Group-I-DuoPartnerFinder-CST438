@@ -23,7 +23,6 @@ public class LandingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
         wireUp();
-
     }
 
     public void wireUp() {
